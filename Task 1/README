@@ -1,0 +1,33 @@
+EN:
+The code appears to be a Python script that captures network packets and parses them to extract information about their source and destination IP addresses, Ethernet MAC addresses, and transport layer protocol type and port numbers.
+
+The script uses the socket library in Python to create a raw socket with the AF_PACKET address family, which allows it to capture and read packets at the link layer. The socket is initialized with SOCK_RAW and htons(3) to indicate that it will capture packets of type Ethernet II.
+
+The script then prompts the user to enter the number of packets to capture, using a while loop to ensure that the input is a valid integer. It stores the value in a variable named amount_of_packets.
+
+Next, the script creates a list named capt, which will hold the packets that are captured. It uses a list comprehension to capture the specified number of packets, with each packet being stored as an element in the list. The size of each packet is limited to 65535 bytes.
+
+After capturing the packets, the script loops through each packet in the list capt. It checks the 13th and 14th bytes of the packet (offsets 12:14 in Python notation) to determine if it is an IPv4 packet, and then extracts the source and destination IP addresses, the length of the IP header, and the transport layer protocol type.
+
+If the transport layer protocol is TCP or UDP, the script extracts the source and destination port numbers and prints them along with the IP information. If the protocol is not TCP or UDP, the protocol number is printed instead.
+
+Finally, the script extracts the source and destination MAC addresses from the Ethernet header and prints them along with the IP information.
+
+Overall, this script provides a basic implementation for capturing and analyzing network packets at the link layer. However, it does not perform any filtering or analysis beyond identifying IPv4 packets and extracting basic information from them.
+
+RU:
+Код представляет собой сценарий Python, который перехватывает сетевые пакеты и анализирует их для извлечения информации об IP-адресах источника и назначения, MAC-адресах Ethernet, типе протокола транспортного уровня и номерах портов.
+
+Сценарий использует библиотеку socket в Python для создания raw socket с семейством адресов AF_PACKET, что позволяет ему захватывать и читать пакеты на канальном уровне. Сокет инициализируется параметрами SOCK_RAW и htons(3), чтобы указать, что он будет перехватывать пакеты типа Ethernet II.
+
+Затем сценарий предлагает пользователю ввести количество пакетов для захвата, используя цикл while, чтобы убедиться, что введенное значение является действительным целым числом. Он сохраняет значение в переменной с именем amount_of_packets.
+
+Далее сценарий создает список с именем capt, в котором будут храниться перехваченные пакеты. Для перехвата указанного количества пакетов используется метод понимания списка, при этом каждый пакет хранится как элемент списка. Размер каждого пакета ограничен 65535 байтами.
+
+После захвата пакетов сценарий перебирает каждый пакет в списке capt. Он проверяет 13-й и 14-й байты пакета (смещения 12:14 в нотации Python), чтобы определить, является ли он пакетом IPv4, а затем извлекает IP-адреса источника и назначения, длину IP-заголовка и тип протокола транспортного уровня.
+
+Если протокол транспортного уровня - TCP или UDP, сценарий извлекает номера портов источника и назначения и печатает их вместе с информацией об IP. Если протокол не является TCP или UDP, вместо него выводится номер протокола.
+
+Наконец, сценарий извлекает MAC-адреса источника и назначения из заголовка Ethernet и печатает их вместе с IP-информацией.
+
+В целом, этот сценарий обеспечивает базовую реализацию для перехвата и анализа сетевых пакетов на канальном уровне. Однако он не выполняет никакой фильтрации или анализа, кроме идентификации пакетов IPv4 и извлечения из них основной информации.
