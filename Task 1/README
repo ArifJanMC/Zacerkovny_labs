@@ -1,3 +1,5 @@
+rewritten.py - Переписанная версия скрипта, изменен в основном визуал кода.
+
 EN:
 The code appears to be a Python script that captures network packets and parses them to extract information about their source and destination IP addresses, Ethernet MAC addresses, and transport layer protocol type and port numbers.
 
