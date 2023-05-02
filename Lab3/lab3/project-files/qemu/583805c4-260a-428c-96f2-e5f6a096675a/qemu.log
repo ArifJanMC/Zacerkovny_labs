@@ -1,0 +1,3 @@
+Start QEMU with "C:\Program Files\GNS3\qemu-3.1.0\qemu-system-x86_64w.exe" -name dhcp-srv -m 256M -smp "cpus=1,sockets=1" -boot "order=c" -drive "file=D:\Zacerkovny\Present_sem\Lab3\lab3\project-files\qemu\583805c4-260a-428c-96f2-e5f6a096675a\hda_disk.qcow2,if=ide,index=0,media=disk,id=drive0" -uuid 583805c4-260a-428c-96f2-e5f6a096675a -serial "telnet:127.0.0.1:5003,server,nowait" -monitor "tcp:127.0.0.1:62506,server,nowait" -net none -device "e1000,mac=0c:38:05:c4:00:00,netdev=gns3-0" -netdev "socket,id=gns3-0,udp=127.0.0.1:10007,localaddr=127.0.0.1:10006" -nographic
+
+Execution log:
