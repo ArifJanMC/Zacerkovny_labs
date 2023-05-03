@@ -4,69 +4,57 @@ import os
 def load_text(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         text = f.read()
-    text = text.replace('\n\n', '\n').replace('\n', ' ')
+    text = text.replace('\n\n', ' ').replace('\n', ' ')
     return text
 
-
-def get_file_path():
-    file_path = input("Please enter the file path or file name: ")
-    if not os.path.isabs(file_path):
-        file_path = os.path.join(os.getcwd(), file_path)
-    return file_path
-
-file_path = get_file_path()
+file_path = input("Please enter the file path or file name: ")
 
 while not os.path.isfile(file_path):
     print("File not found. Please try again.")
-    file_path = get_file_path()
+    file_path = input("Please enter the file path or file name: ")
 
-oz_txt = load_text(file_path)
-
-oz_art_lst = oz_txt.split('\n\n')
-oz_art_lst = [art.split('\n\t') for art in oz_art_lst]
-oz_art_lst = [[s.replace('\n', ' ') for s in art] for art in oz_art_lst]
-
-oz_dict = {}
-for art in oz_art_lst:
-    if art[0] not in oz_dict:
-        oz_dict[art[0]] = [art[1:]]
-    else:
-        if len(art[1]) > 5 and art[1][:5] == 'E.g. ':
-            oz_dict[art[0]][-1] += art[1:]
-        else:
-            oz_dict[art[0]] += [art[1:]]
-
-text = ''
-for w in oz_dict:
-    for v in oz_dict[w]:
-        text += ' '.join(v) + ' '
-
-text = text.replace('E.g.', ' ')
-text = text.replace('(', '')
-text = text.replace(')', '')
+text = load_text(file_path)
 text = text.lower()
 
-text_lst = list(text)
+# Character frequency analysis
+chars, cntrs = np.unique(list(text), return_counts=True)
+char_freq = {c: n for c, n in zip(chars, cntrs)}
+char_freq_sorted = {c: n for c, n in sorted(char_freq.items(), key=lambda item: item[1], reverse=True)}
 
-chars, cntrs = np.unique(text_lst, return_counts=True)
-chrs_dct = {c: n for c, n in zip(chars, cntrs)}
-comb_dct_srtd = {c: n for c, n in sorted(chrs_dct.items(), key=lambda item: item[1], reverse=True)}
-
-C = sum(cntrs)
-comb_dct_P = {c: n/C for c, n in chrs_dct.items()}
-comb_dct_P_srtd = {c: p for c, p in sorted(comb_dct_P.items(), key=lambda item: item[1], reverse=True)}
-
-print('------------------------------------------')
-for c in comb_dct_P:
-    print(c, "{:7.6f}".format(comb_dct_P[c]))
+total_chars = sum(cntrs)
+char_prob = {c: n/total_chars for c, n in char_freq.items()}
+char_prob_sorted = {c: p for c, p in sorted(char_prob.items(), key=lambda item: item[1], reverse=True)}
 
 print('------------------------------------------')
-for c in comb_dct_P_srtd:
-    print(c, "{:7.6f}".format(comb_dct_P[c]))
+for c in char_prob:
+    percentage = char_prob[c] * 100
+    if c == '\t':
+        print(f"\\t: {char_prob[c]:.6f} ~ {percentage:.2f}%")
+    elif c == ' ':
+        print(f"space: {char_prob[c]:.6f} ~ {percentage:.2f}%")
+    else:
+        print(f"{c}: {char_prob[c]:.6f} ~ {percentage:.2f}%")
 
+print('------------------------------------------')
+for c in char_prob_sorted:
+    percentage = char_prob[c] * 100
+    if c == '\t':
+        print(f"\\t: {char_prob_sorted[c]:.6f} ~ {percentage:.2f}%")
+    elif c == ' ':
+        print(f"space: {char_prob_sorted[c]:.6f} ~ {percentage:.2f}%")
+    else:
+        print(f"{c}: {char_prob_sorted[c]:.6f} ~ {percentage:.2f}%")
+
+
+# Word frequency analysis
 words_lst = text.split()
 words_lst = [w.strip(',[]():<>=!;-') for w in words_lst]
 
 words, wcntrs = np.unique(words_lst, return_counts=True)
 words_dct = {w: n for w, n in zip(words, wcntrs)}
 words_dct_srtd = {w: n for w, n in sorted(words_dct.items(), key=lambda item: item[1], reverse=True)}
+
+print('------------------------------------------')
+print("Top 10 words:")
+for i, (word, count) in enumerate(sorted(words_dct_srtd.items(), key=lambda x: x[1], reverse=True)[:10]):
+    print(f"{i + 1}. {word}: {count}")
